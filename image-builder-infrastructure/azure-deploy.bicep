@@ -34,7 +34,7 @@ resource image_rg_resource 'Microsoft.Resources/resourceGroups@2021-01-01' = {
 resource imageCreationRole 'Microsoft.Authorization/roleDefinitions@2018-01-01-preview' = {
   name: '21162358-bc1f-4707-85ee-783efbafa763' // constant value for this role.
   properties: {
-    roleName: 'Azure Image Builder Service Image Creation Role'
+    roleName: 'Custom Role - Azure Image Builder Service Image Creation'
     description: 'Azure Image Builder Service Image Creation Role'
     type: 'customRole'
     permissions: [
@@ -56,7 +56,7 @@ resource imageCreationRole 'Microsoft.Authorization/roleDefinitions@2018-01-01-p
       }
     ]
     assignableScopes: [
-      '/'
+      '/subscriptions/${subscription().subscriptionId}'
     ]
   }
 }
@@ -65,7 +65,7 @@ resource imageCreationRole 'Microsoft.Authorization/roleDefinitions@2018-01-01-p
 resource aibNetworkServiceRole 'Microsoft.Authorization/roleDefinitions@2018-01-01-preview' = {
   name: '16035cd1-94e2-48d6-aab9-f13231dfb9a1' // constant value for this role.
   properties: {
-    roleName: 'Azure Image Builder Service Networking Role'
+    roleName: 'Custom Role - Azure Image Builder Service Networking'
     description: 'Azure Image Builder Service Networking Role'
     type: 'customRole'
     permissions: [
@@ -83,7 +83,7 @@ resource aibNetworkServiceRole 'Microsoft.Authorization/roleDefinitions@2018-01-
       }
     ]
     assignableScopes: [
-      '/'
+      '/subscriptions/${subscription().subscriptionId}'
     ]
   }
 }
@@ -139,10 +139,12 @@ module network_module './modules/deploy-network.bicep' = {
 }
 
 module sig_module './modules/deploy-image-gallery.bicep' = {
-  scope: infrastructure_rg_resource
+  scope: image_rg_resource
   name: '${deploymentPrefix}-image-gallery'
   params: {
     location: location
     sigName: sigName
   }
 }
+
+output sigResourceId string = sig_module.outputs.resourceId
