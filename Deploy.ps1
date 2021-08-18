@@ -7,8 +7,8 @@ $index = 1
 
 az deployment sub create --location australiaeast `
     --subscription $SubscriptionId `
-    --template-file ./image-builder-infrastructure/azure-deploy.bicep `
-    --parameters ./image-builder-infrastructure/parameters.jsonc `
+    --template-file ./azure-deploy.bicep `
+    --parameters ./parameters.jsonc `
     --parameters deploymentPrefix=$deploymentPrefix `
     --name "$($deploymentPrefix)-$($index)" `
     --output none
