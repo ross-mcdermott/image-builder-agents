@@ -69,3 +69,6 @@ resource nsgPep 'Microsoft.Network/networkSecurityGroups@2020-07-01' = {
     securityRules: [ ]
   }
 }
+
+output vnetResourceId string = vnet.id
+output subnetImageBuilderResourceId string = '${vnet.id}/subnets/ImageBuildSubnet'

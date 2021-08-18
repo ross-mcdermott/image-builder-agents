@@ -147,4 +147,15 @@ module sig_module './modules/deploy-image-gallery.bicep' = {
   }
 }
 
+module img_devops_module './image-definitions/ubuntu-1804-devops-agent/image-definition.bicep' = {
+  scope: image_rg_resource
+  name: '${deploymentPrefix}-devops-image'
+  params: {
+    imageName: 'ubuntu-1804-devops-agent'
+    sigResourceId: sig_module.outputs.resourceId
+    subnetResourceId: network_module.outputs.subnetImageBuilderResourceId
+    umiResourceId: managed_identity_module.outputs.resourceId
+  }
+}
+
 output sigResourceId string = sig_module.outputs.resourceId
